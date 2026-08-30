@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+<body>
+    <div class="container my-4">
+        <div class="card">
+            <div class="card-header">
+                <h2>Product List</h2>
+            </div>
+            <div class="card-body">
+                <div th:switch="${products}">
+                    <p class="my-3">
+                        <a href="/products/insert" class="btn btn-primary">
+                            <i class="fas fa-user-plus ml-2"></i> Add Product
+                        </a>
+                        <a href="/" class="btn btn-secondary">
+                            <i class="fas fa-home ml-2"></i> Home
+                        </a>
+                    </p>
+                    
+                    <div th:case="null">
+                        <h3>No Products yet!</h3>
+                    </div>
+                    
+                    <div th:case="*">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="product : ${products}">
+                                    <td th:text="${product.id}"></td>
+                                    <td th:text="${product.name}"></td>
+                                    <td th:text="${product.description}"></td>
+                                    <td th:text="${'$' + product.price}"></td>
+                                    <td th:text="${product.quantity}"></td>
+                                    <td>
+                                        <a th:href="@{/products/edit/{id}(id=${product.id})}" 
+                                           class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a th:href="@{/products/delete/{id}(id=${product.id})}" 
+                                           class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Are you sure you want to delete this product?')">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
